@@ -20,6 +20,9 @@
     --muted-foreground: 220 10% 46%;
     --accent: 222 40% 96%;
     --accent-foreground: 228 100% 50%;
+    --accent-teal: 185 100% 45%;
+    --accent-orange: 25 95% 53%;
+    --accent-purple: 270 70% 55%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
     --success: 152 68% 40%;
@@ -41,6 +44,9 @@
     --sidebar-accent-foreground: 220 15% 12%;
     --sidebar-border: 222 20% 94%;
     --sidebar-ring: 228 100% 50%;
+    --surface-dark: 220 15% 12%;
+    --surface-section: 222 40% 98%;
+    --surface-footer: 220 15% 8%;
     --chart-1: 228 100% 50%;
     --chart-2: 185 100% 45%;
     --chart-3: 152 68% 40%;

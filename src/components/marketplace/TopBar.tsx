@@ -169,6 +169,7 @@ export default function TopBar() {
             size="icon"
             className="md:hidden h-9 w-9"
             onClick={() => setSearchOpen(!searchOpen)}
+            aria-label="Search"
           >
             <Search className="w-5 h-5" />
           </Button>
@@ -190,6 +191,7 @@ export default function TopBar() {
                 size="icon"
                 className="h-9 w-9 relative"
                 onClick={() => navigate("/messages")}
+                aria-label="Messages"
               >
                 <MessageCircle className="w-5 h-5" />
                 <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-primary" />
@@ -200,6 +202,7 @@ export default function TopBar() {
                 size="icon"
                 className="h-9 w-9 relative"
                 onClick={() => navigate("/notifications")}
+                aria-label="Notifications"
               >
                 <Bell className="w-5 h-5" />
                 <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-coral animate-pulse-live" />
@@ -210,6 +213,7 @@ export default function TopBar() {
                 size="icon"
                 className="h-9 w-9"
                 onClick={() => navigate("/cart")}
+                aria-label="Shopping cart"
               >
                 <ShoppingCart className="w-5 h-5" />
               </Button>
@@ -219,6 +223,7 @@ export default function TopBar() {
                 size="icon"
                 className="h-9 w-9"
                 onClick={() => navigate("/profile")}
+                aria-label="Profile"
               >
                 <div className="w-7 h-7 rounded-full gradient-primary flex items-center justify-center text-xs font-bold text-white">
                   {user.email?.[0]?.toUpperCase() || "U"}

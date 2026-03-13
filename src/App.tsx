@@ -45,6 +45,8 @@ const Drops = React.lazy(() => import("./pages/Drops"));
 const LiveFeed = React.lazy(() => import("./pages/LiveFeed"));
 const RewardsClub = React.lazy(() => import("./pages/RewardsClub"));
 const OBSSetup = React.lazy(() => import("./pages/OBSSetup"));
+const Terms = React.lazy(() => import("./pages/Terms"));
+const Privacy = React.lazy(() => import("./pages/Privacy"));
 const NotFound = React.lazy(() => import("./pages/NotFound"));
 
 function PageLoadingSkeleton() {
@@ -124,6 +126,8 @@ const App = () => (
                 <Route path="/drops" element={<Drops />} />
                 <Route path="/rewards" element={<RewardsClub />} />
                 <Route path="/obs-setup" element={<OBSSetup />} />
+                <Route path="/terms" element={<Terms />} />
+                <Route path="/privacy" element={<Privacy />} />
               </Route>
 
               <Route path="*" element={<NotFound />} />
