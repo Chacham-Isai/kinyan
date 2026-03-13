@@ -6,16 +6,17 @@ import { useState, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { mockProducts } from "@/data/mockData";
 import ProductCard from "@/components/marketplace/ProductCard";
+import { useUserData } from "@/contexts/UserDataContext";
 import { getUserProfile, getRecommendedProducts } from "@/lib/recommendations";
 
 export default function Saved() {
   const [view, setView] = useState<"grid" | "list">("grid");
   const [priceAlerts, setPriceAlerts] = useState<Record<string, boolean>>({});
-  // Mock: show first 4 products as "saved"
-  const savedProducts = mockProducts.slice(0, 4);
+  const { favoriteIds } = useUserData();
+
+  const savedProducts = mockProducts.filter((p) => favoriteIds.has(p.id));
 
   const profile = useMemo(() => getUserProfile(), []);
-  // AI: find similar items to what user has saved
   const similarProducts = useMemo(() => {
     const savedIds = new Set(savedProducts.map((p) => p.id));
     return getRecommendedProducts(
@@ -23,7 +24,7 @@ export default function Saved() {
       profile,
       4
     );
-  }, [profile]);
+  }, [profile, savedProducts]);
 
   const togglePriceAlert = (productId: string) => {
     setPriceAlerts((prev) => ({ ...prev, [productId]: !prev[productId] }));
@@ -101,6 +102,7 @@ export default function Saved() {
         <div className="text-center py-16 space-y-4">
           <Heart className="w-12 h-12 text-muted-foreground mx-auto" />
           <p className="text-muted-foreground">No saved items yet</p>
+          <p className="text-sm text-muted-foreground">Tap the heart on any product to save it here</p>
           <Button asChild className="gradient-primary text-white">
             <Link to="/browse">Browse marketplace</Link>
           </Button>

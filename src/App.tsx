@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
+import { UserDataProvider } from "./contexts/UserDataContext";
 import { Skeleton } from "@/components/ui/skeleton";
 
 // Lazy-loaded pages
@@ -75,6 +76,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
+          <UserDataProvider>
           <Suspense fallback={<PageLoadingSkeleton />}>
             <Routes>
               {/* Landing page (marketing) */}
@@ -133,6 +135,7 @@ const App = () => (
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
+          </UserDataProvider>
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>

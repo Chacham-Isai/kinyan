@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { Heart, Truck } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { useUserData } from "@/contexts/UserDataContext";
+import { cn } from "@/lib/utils";
 import type { Product } from "@/data/mockData";
 
 const categoryColors: Record<string, { bg: string; emoji: string }> = {
@@ -19,6 +21,9 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+  const { isFavorite, toggleFavorite } = useUserData();
+  const liked = isFavorite(product.id);
+
   const hasDiscount = product.compareAtPrice && product.compareAtPrice > product.price;
   const discountPercent = hasDiscount
     ? Math.round((1 - product.price / product.compareAtPrice!) * 100)
@@ -47,13 +52,20 @@ export default function ProductCard({ product }: ProductCardProps) {
 
         {/* Like button */}
         <button
-          className="absolute top-2 right-2 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm shadow-sm flex items-center justify-center hover:bg-white transition-colors"
+          className={cn(
+            "absolute top-2 right-2 w-8 h-8 rounded-full shadow-sm flex items-center justify-center transition-colors",
+            liked
+              ? "bg-red-500 hover:bg-red-600"
+              : "bg-white/80 backdrop-blur-sm hover:bg-white"
+          )}
           onClick={(e) => {
             e.preventDefault();
-            // Toggle like
+            e.stopPropagation();
+            toggleFavorite(product.id);
           }}
+          aria-label={liked ? "Remove from saved" : "Save item"}
         >
-          <Heart className="w-4 h-4 text-muted-foreground" />
+          <Heart className={cn("w-4 h-4", liked ? "text-white fill-white" : "text-muted-foreground")} />
         </button>
 
         {/* Condition badge */}
@@ -94,8 +106,8 @@ export default function ProductCard({ product }: ProductCardProps) {
             )}
           </div>
           <div className="flex items-center gap-1 text-xs text-muted-foreground">
-            <Heart className="w-3 h-3" />
-            {product.likes}
+            <Heart className={cn("w-3 h-3", liked && "text-red-500 fill-red-500")} />
+            {product.likes + (liked ? 1 : 0)}
           </div>
         </div>
 
