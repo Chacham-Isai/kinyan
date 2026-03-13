@@ -52,6 +52,7 @@ export default function Cart() {
     zip: "",
   });
   const [processing, setProcessing] = useState(false);
+  const [orderNumber] = useState(() => `KIN-${Math.random().toString(36).substring(2, 8).toUpperCase()}`);
 
   const updateQuantity = (id: string, delta: number) => {
     setItems(
@@ -93,7 +94,7 @@ export default function Cart() {
         <div>
           <h1 className="font-display text-2xl font-bold text-foreground">Order Confirmed!</h1>
           <p className="text-muted-foreground mt-2">
-            Your order #KIN-{Math.random().toString(36).substring(2, 8).toUpperCase()} has been placed.
+            Your order #{orderNumber} has been placed.
             You'll receive tracking info once the seller ships.
           </p>
         </div>

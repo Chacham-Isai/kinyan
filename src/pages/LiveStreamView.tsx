@@ -169,6 +169,8 @@ export default function LiveStreamView() {
                   variant="ghost"
                   size="icon"
                   className="h-8 w-8 text-white hover:bg-white/20"
+                  aria-label="Report stream"
+                  onClick={() => toast.info("Stream reported", { description: "Our team will review this stream. Thank you for keeping KINYAN safe." })}
                 >
                   <Flag className="w-4 h-4" />
                 </Button>

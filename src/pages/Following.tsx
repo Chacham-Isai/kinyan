@@ -3,10 +3,11 @@ import { ArrowLeft, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { mockSellers } from "@/data/mockData";
 import SellerCard from "@/components/marketplace/SellerCard";
+import { useUserData } from "@/contexts/UserDataContext";
 
 export default function Following() {
-  // Mock: show first 4 sellers as "followed"
-  const followedSellers = mockSellers.slice(0, 4);
+  const { followingIds } = useUserData();
+  const followedSellers = mockSellers.filter((s) => followingIds.has(s.id));
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-6 space-y-6">
@@ -28,6 +29,7 @@ export default function Following() {
         <div className="text-center py-16 space-y-4">
           <Users className="w-12 h-12 text-muted-foreground mx-auto" />
           <p className="text-muted-foreground">You're not following anyone yet</p>
+          <p className="text-sm text-muted-foreground">Follow sellers to see their latest listings and live streams</p>
           <Button asChild className="gradient-primary text-white">
             <Link to="/browse">Discover sellers</Link>
           </Button>

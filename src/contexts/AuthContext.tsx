@@ -41,12 +41,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(false);
 
       if (session?.user) {
+        const sellerFlag = localStorage.getItem("kinyan_is_seller") === "true";
         setProfile({
-          display_name: session.user.user_metadata?.full_name || "User",
-          username: session.user.email?.split("@")[0] || "user",
+          display_name: session.user.user_metadata?.full_name || session.user.user_metadata?.name || "User",
+          username: session.user.user_metadata?.preferred_username || session.user.email?.split("@")[0] || "user",
           avatar_url: session.user.user_metadata?.avatar_url || null,
           bio: null,
-          is_seller: false,
+          is_seller: sellerFlag,
         });
       } else {
         setProfile(null);

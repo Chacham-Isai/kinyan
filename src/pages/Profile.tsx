@@ -6,9 +6,11 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
+import { useUserData } from "@/contexts/UserDataContext";
 
 export default function Profile() {
   const { user, profile, signOut } = useAuth();
+  const { getFavoriteCount, getFollowingCount } = useUserData();
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
@@ -61,7 +63,7 @@ export default function Profile() {
           </h1>
           <p className="text-sm text-muted-foreground">@{profile?.username || user.email?.split("@")[0]}</p>
         </div>
-        <Button variant="outline" size="sm" className="text-xs">
+        <Button variant="outline" size="sm" className="text-xs" onClick={() => navigate("/settings")}>
           Edit
         </Button>
       </div>
@@ -69,9 +71,9 @@ export default function Profile() {
       {/* Quick Stats */}
       <div className="grid grid-cols-3 gap-3">
         {[
-          { label: "Orders", value: "12" },
+          { label: "Saved", value: String(getFavoriteCount()) },
           { label: "Reviews", value: "8" },
-          { label: "Following", value: "24" },
+          { label: "Following", value: String(getFollowingCount()) },
         ].map((stat) => (
           <div
             key={stat.label}

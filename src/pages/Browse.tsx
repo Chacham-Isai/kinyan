@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, SlidersHorizontal, Grid3X3, List } from "lucide-react";
+import { ArrowLeft, SlidersHorizontal, Grid3X3, List, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import ProductCard from "@/components/marketplace/ProductCard";
@@ -14,6 +14,9 @@ export default function Browse() {
   const { categoryId } = useParams();
   const [sortBy, setSortBy] = useState("trending");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [showFilters, setShowFilters] = useState(false);
+  const [filterCondition, setFilterCondition] = useState<string>("all");
+  const [filterShipping, setFilterShipping] = useState<string>("all");
 
   const category = categoryId ? getCategoryById(categoryId) : null;
 
@@ -24,9 +27,19 @@ export default function Browse() {
     }
   }, [categoryId]);
 
-  const filteredProducts = categoryId
-    ? mockProducts.filter((p) => p.category === categoryId)
-    : mockProducts;
+  const filteredProducts = mockProducts
+    .filter((p) => !categoryId || p.category === categoryId)
+    .filter((p) => filterCondition === "all" || p.condition === filterCondition)
+    .filter((p) => filterShipping === "all" || (filterShipping === "free" && p.shipping === "Free"))
+    .sort((a, b) => {
+      switch (sortBy) {
+        case "price-low": return a.price - b.price;
+        case "price-high": return b.price - a.price;
+        case "popular": return b.likes - a.likes;
+        case "newest": return 0;
+        default: return b.likes - a.likes;
+      }
+    });
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 space-y-6">
@@ -127,12 +140,75 @@ export default function Browse() {
                 <List className="w-4 h-4" />
               </button>
             </div>
-            <Button variant="outline" size="sm" className="h-8 text-xs gap-1">
+            <Button
+              variant={showFilters ? "default" : "outline"}
+              size="sm"
+              className={cn("h-8 text-xs gap-1", showFilters && "gradient-primary text-white")}
+              onClick={() => setShowFilters(!showFilters)}
+            >
               <SlidersHorizontal className="w-3.5 h-3.5" />
               Filters
             </Button>
           </div>
         </div>
+
+        {/* Filter Panel */}
+        {showFilters && (
+          <div className="rounded-xl border border-border/50 bg-card p-4 mb-4 space-y-4 animate-slide-up">
+            <div className="flex items-center justify-between">
+              <h3 className="font-display font-bold text-sm text-foreground">Filters</h3>
+              <button onClick={() => setShowFilters(false)} className="text-muted-foreground hover:text-foreground">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <div className="space-y-3">
+              <div>
+                <p className="text-xs font-medium text-muted-foreground mb-2">Condition</p>
+                <div className="flex flex-wrap gap-2">
+                  {["all", "New", "Like New", "Good", "Fair"].map((c) => (
+                    <button
+                      key={c}
+                      onClick={() => setFilterCondition(c)}
+                      className={cn(
+                        "px-3 py-1.5 rounded-full text-xs font-medium transition-all",
+                        filterCondition === c ? "gradient-primary text-white" : "bg-secondary text-muted-foreground hover:text-foreground"
+                      )}
+                    >
+                      {c === "all" ? "All" : c}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <p className="text-xs font-medium text-muted-foreground mb-2">Shipping</p>
+                <div className="flex flex-wrap gap-2">
+                  {[{ id: "all", label: "All" }, { id: "free", label: "Free Shipping" }].map((s) => (
+                    <button
+                      key={s.id}
+                      onClick={() => setFilterShipping(s.id)}
+                      className={cn(
+                        "px-3 py-1.5 rounded-full text-xs font-medium transition-all",
+                        filterShipping === s.id ? "gradient-primary text-white" : "bg-secondary text-muted-foreground hover:text-foreground"
+                      )}
+                    >
+                      {s.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+            {(filterCondition !== "all" || filterShipping !== "all") && (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-xs text-primary"
+                onClick={() => { setFilterCondition("all"); setFilterShipping("all"); }}
+              >
+                Clear all filters
+              </Button>
+            )}
+          </div>
+        )}
 
         {/* Product Grid */}
         <div

@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
+import { UserDataProvider } from "./contexts/UserDataContext";
 import { Skeleton } from "@/components/ui/skeleton";
 
 // Lazy-loaded pages
@@ -45,6 +46,8 @@ const Drops = React.lazy(() => import("./pages/Drops"));
 const LiveFeed = React.lazy(() => import("./pages/LiveFeed"));
 const RewardsClub = React.lazy(() => import("./pages/RewardsClub"));
 const OBSSetup = React.lazy(() => import("./pages/OBSSetup"));
+const Terms = React.lazy(() => import("./pages/Terms"));
+const Privacy = React.lazy(() => import("./pages/Privacy"));
 const NotFound = React.lazy(() => import("./pages/NotFound"));
 
 function PageLoadingSkeleton() {
@@ -73,6 +76,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
+          <UserDataProvider>
           <Suspense fallback={<PageLoadingSkeleton />}>
             <Routes>
               {/* Landing page (marketing) */}
@@ -124,11 +128,14 @@ const App = () => (
                 <Route path="/drops" element={<Drops />} />
                 <Route path="/rewards" element={<RewardsClub />} />
                 <Route path="/obs-setup" element={<OBSSetup />} />
+                <Route path="/terms" element={<Terms />} />
+                <Route path="/privacy" element={<Privacy />} />
               </Route>
 
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
+          </UserDataProvider>
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>

@@ -59,7 +59,7 @@ const revenueByDay = [
   { day: "Wed", amount: 520 },
   { day: "Thu", amount: 690 },
   { day: "Fri", amount: 280 },
-  { day: "Mot", amount: 1145 },
+  { day: "Motz", amount: 1145 },
 ];
 
 const maxRevenue = Math.max(...revenueByDay.map((d) => d.amount));

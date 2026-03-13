@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { Star, Users, ShoppingBag, CheckCircle2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { useUserData } from "@/contexts/UserDataContext";
+import { cn } from "@/lib/utils";
 import type { Seller } from "@/data/mockData";
 
 interface SellerCardProps {
@@ -8,6 +10,9 @@ interface SellerCardProps {
 }
 
 export default function SellerCard({ seller }: SellerCardProps) {
+  const { isFollowing, toggleFollow } = useUserData();
+  const following = isFollowing(seller.id);
+
   return (
     <Link
       to={`/seller/${seller.username}`}
@@ -40,14 +45,26 @@ export default function SellerCard({ seller }: SellerCardProps) {
           </span>
           <span className="flex items-center gap-0.5 text-xs text-muted-foreground">
             <Users className="w-3 h-3" />
-            {seller.followers.toLocaleString()}
+            {(seller.followers + (following ? 1 : 0)).toLocaleString()}
           </span>
         </div>
       </div>
 
-      {/* Follow button placeholder */}
-      <Badge variant="secondary" className="shrink-0 text-xs cursor-pointer hover:bg-primary hover:text-white transition-colors">
-        Follow
+      {/* Follow button */}
+      <Badge
+        className={cn(
+          "shrink-0 text-xs cursor-pointer transition-colors",
+          following
+            ? "bg-primary/10 text-primary hover:bg-primary/20 border-primary/20"
+            : "bg-secondary text-muted-foreground hover:bg-primary hover:text-white border-0"
+        )}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          toggleFollow(seller.id);
+        }}
+      >
+        {following ? "Following" : "Follow"}
       </Badge>
     </Link>
   );

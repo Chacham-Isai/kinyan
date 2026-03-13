@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Star, Users, ShoppingBag, CheckCircle2, MapPin, Calendar, Radio, Share2, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -17,6 +17,7 @@ export default function SellerProfile() {
   const [tab, setTab] = useState<"listings" | "live" | "reviews">("listings");
   const [isFollowing, setIsFollowing] = useState(false);
   const [showShare, setShowShare] = useState(false);
+  const navigate = useNavigate();
 
   const seller = mockSellers.find((s) => s.username === username) || mockSellers[0];
 
@@ -81,7 +82,7 @@ export default function SellerProfile() {
                 variant="outline"
                 size="icon"
                 className="h-9 w-9"
-                onClick={() => toast.info("Opening chat...")}
+                onClick={() => navigate(`/messages/${seller.id}`)}
               >
                 <MessageCircle className="w-4 h-4" />
               </Button>

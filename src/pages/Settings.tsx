@@ -41,7 +41,7 @@ export default function Settings() {
         <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-1 mb-2">Account</h2>
         {[
           { icon: User, label: "Edit Profile", desc: "Name, username, avatar", path: "/profile" },
-          { icon: Lock, label: "Password & Security", desc: "Change password, 2FA" },
+          { icon: Lock, label: "Password & Security", desc: "Change password, 2FA", path: "/settings" },
           { icon: CreditCard, label: "Payment Methods", desc: "Cards, bank accounts", path: "/payments" },
         ].map((item) => (
           <Link

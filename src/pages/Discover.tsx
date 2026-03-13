@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import {
   Heart, MessageCircle, Share2, ShoppingCart, Star,
-  ChevronUp, ChevronDown, Zap, Eye
+  ChevronUp, ChevronDown, Zap
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -101,7 +101,17 @@ function ProductSlide({ product, isActive }: { product: Product; isActive: boole
             <span className="text-xs font-medium text-foreground">Chat</span>
           </button>
 
-          <button className="flex flex-col items-center gap-1">
+          <button
+            className="flex flex-col items-center gap-1"
+            onClick={() => {
+              if (navigator.share) {
+                navigator.share({ title: product.title, url: `${window.location.origin}/product/${product.id}` });
+              } else {
+                navigator.clipboard.writeText(`${window.location.origin}/product/${product.id}`);
+                toast.success("Link copied!");
+              }
+            }}
+          >
             <div className="w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg">
               <Share2 className="w-6 h-6 text-foreground" />
             </div>
