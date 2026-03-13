@@ -61,7 +61,7 @@ export default function Profile() {
           </h1>
           <p className="text-sm text-muted-foreground">@{profile?.username || user.email?.split("@")[0]}</p>
         </div>
-        <Button variant="outline" size="sm" className="text-xs">
+        <Button variant="outline" size="sm" className="text-xs" onClick={() => navigate("/settings")}>
           Edit
         </Button>
       </div>

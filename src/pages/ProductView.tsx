@@ -104,7 +104,20 @@ export default function ProductView() {
                 >
                   <Heart className={`w-5 h-5 ${liked ? "fill-red-500 text-red-500" : ""}`} />
                 </Button>
-                <Button variant="ghost" size="icon" className="h-9 w-9">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-9 w-9"
+                  aria-label="Share"
+                  onClick={() => {
+                    if (navigator.share) {
+                      navigator.share({ title: product.title, url: window.location.href });
+                    } else {
+                      navigator.clipboard.writeText(window.location.href);
+                      toast.success("Link copied to clipboard!");
+                    }
+                  }}
+                >
                   <Share2 className="w-5 h-5" />
                 </Button>
               </div>

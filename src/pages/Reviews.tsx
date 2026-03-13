@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowLeft, Star, ThumbsUp, MessageCircle, Filter } from "lucide-react";
+import { ArrowLeft, Star, ThumbsUp, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -89,6 +89,7 @@ function Stars({ rating, size = "sm" }: { rating: number; size?: "sm" | "md" }) 
 
 export default function Reviews() {
   const [filter, setFilter] = useState<"all" | "given" | "received">("all");
+  const [helpfulIds, setHelpfulIds] = useState<Set<string>>(new Set());
 
   const filtered = filter === "all"
     ? mockReviews
@@ -195,14 +196,35 @@ export default function Reviews() {
             )}
 
             <div className="flex items-center gap-4 pt-1">
-              <button className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
-                <ThumbsUp className="w-3.5 h-3.5" />
-                Helpful ({review.helpful})
+              <button
+                className={cn(
+                  "flex items-center gap-1.5 text-xs transition-colors",
+                  helpfulIds.has(review.id)
+                    ? "text-primary font-medium"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
+                onClick={() => {
+                  setHelpfulIds((prev) => {
+                    const next = new Set(prev);
+                    if (next.has(review.id)) {
+                      next.delete(review.id);
+                    } else {
+                      next.add(review.id);
+                    }
+                    return next;
+                  });
+                }}
+              >
+                <ThumbsUp className={cn("w-3.5 h-3.5", helpfulIds.has(review.id) && "fill-primary")} />
+                Helpful ({review.helpful + (helpfulIds.has(review.id) ? 1 : 0)})
               </button>
-              <button className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
+              <Link
+                to={`/messages/${review.seller === "You" ? "" : review.id}`}
+                className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
+              >
                 <MessageCircle className="w-3.5 h-3.5" />
                 Reply
-              </button>
+              </Link>
             </div>
           </div>
         ))}

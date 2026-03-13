@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { toast } from "sonner";
 import {
   mockCharities, mockFundraisers, mockAuctionGames,
   type Fundraiser, type AuctionGame, type Charity
@@ -225,11 +226,18 @@ export default function CharityHub() {
             Every ticket changes a life.
           </p>
           <div className="flex gap-3 mt-5">
-            <Button className="bg-white text-primary hover:bg-white/90 font-bold">
+            <Button
+              className="bg-white text-primary hover:bg-white/90 font-bold"
+              onClick={() => document.getElementById("auction-games")?.scrollIntoView({ behavior: "smooth" })}
+            >
               <Gift className="w-4 h-4 mr-1.5" />
               Browse Games
             </Button>
-            <Button variant="outline" className="border-white/30 text-white hover:bg-white/10">
+            <Button
+              variant="outline"
+              className="border-white/30 text-white hover:bg-white/10"
+              onClick={() => toast.info("Fundraising applications coming soon!", { description: "Contact us at fundraising@kinyan.com to get started." })}
+            >
               Start Fundraising
             </Button>
           </div>
@@ -256,7 +264,7 @@ export default function CharityHub() {
 
       {/* Auction Games */}
       <section>
-        <div className="flex items-center justify-between mb-4">
+        <div id="auction-games" className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <Trophy className="w-5 h-5 text-primary" />
             <h2 className="font-display font-bold text-lg text-foreground">Auction Games</h2>

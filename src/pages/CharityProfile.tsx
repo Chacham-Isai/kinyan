@@ -148,7 +148,19 @@ export default function CharityProfile() {
             ${charity.totalRaised.toLocaleString()}
           </p>
         </div>
-        <Button size="sm" variant="outline" className="gap-1.5">
+        <Button
+          size="sm"
+          variant="outline"
+          className="gap-1.5"
+          onClick={() => {
+            if (navigator.share) {
+              navigator.share({ title: charity.name, url: window.location.href });
+            } else {
+              navigator.clipboard.writeText(window.location.href);
+              toast.success("Link copied to clipboard!");
+            }
+          }}
+        >
           <Share2 className="w-3.5 h-3.5" />
           Share
         </Button>
